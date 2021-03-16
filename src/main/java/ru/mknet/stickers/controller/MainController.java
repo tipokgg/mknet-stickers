@@ -67,7 +67,10 @@ public class MainController {
             stickersData.putSticker(row + column, sticker);
         } else if (!macaddr.isEmpty()) {
             List<String> list = generateByMac.getData(macaddr.trim());
-            Sticker sticker = new Sticker(list.get(0), list.get(1));
+            Sticker sticker = null;
+            if (list != null) {
+               sticker = new Sticker(list.get(0), list.get(1));
+            }
             stickersData.putSticker(row + column, sticker);
         }
 

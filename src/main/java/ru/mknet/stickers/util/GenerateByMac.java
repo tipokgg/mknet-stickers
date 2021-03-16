@@ -35,13 +35,12 @@ public class GenerateByMac {
                 while ((inputLine = in.readLine()) != null) {
                     inputLine = inputLine.replaceAll("\\[", "");
                     inputLine = inputLine.replaceAll("\"", "");
-                    inputLine = inputLine.replaceAll("\\]", "");
                     list = Arrays.asList(inputLine.split(","));
                 }
 
                 in.close();
             } else {
-                System.out.println("GET request not worked");
+                System.out.println("GET request dont worked");
             }
         } catch (IOException e) {
             e.printStackTrace();

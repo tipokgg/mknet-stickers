@@ -18,7 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
-src/main/java/ru/mknet/stickers/service/Values.java
+src/main/resources/secrets.properties
 
 ### NetBeans ###
 /nbproject/private/

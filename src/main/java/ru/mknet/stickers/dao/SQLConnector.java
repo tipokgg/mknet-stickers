@@ -1,7 +1,7 @@
 package ru.mknet.stickers.dao;
 
 import org.springframework.stereotype.Component;
-import ru.mknet.stickers.service.Values;
+import ru.mknet.stickers.service.SecretsService;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -12,10 +12,10 @@ public class SQLConnector {
 
     private  Connection connection;
     private  Statement statement;
-    // "Values" is a ENUM. Placed to .gitignore
-    private final String DB_JDBC = Values.DB_JDBC.getTitle();
-    private final String USER = Values.DB_USER.getTitle();
-    private final String VALUE = Values.DB_VALUE.getTitle();
+
+    private final String DB_JDBC = SecretsService.getProperty("DB_BILLING");
+    private final String USER = SecretsService.getProperty("DB_USER");
+    private final String VALUE = SecretsService.getProperty("DB_PASS");
 
     public void connect() {
         try {
@@ -41,7 +41,8 @@ public class SQLConnector {
 
         HashMap<String,String> map = new HashMap<>();
 
-        String query = "SELECT a.login_alias AS login, l.pswd AS password FROM `user_login_1` l INNER JOIN `user_alias_1` a ON a.login_id = l.id " +
+        String query = "SELECT a.login_alias AS login, l.pswd AS password FROM `user_login_1` l " +
+                "INNER JOIN `user_alias_1` a ON a.login_id = l.id " +
                 "INNER JOIN `contract` c ON l.cid = c.id WHERE c.title =" + contract;
         try (ResultSet set = statement.executeQuery(query)) {
 
@@ -56,9 +57,6 @@ public class SQLConnector {
 
         return map;
     }
-
-
-
 }
 
 
