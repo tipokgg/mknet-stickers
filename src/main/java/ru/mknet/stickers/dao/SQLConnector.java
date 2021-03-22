@@ -1,7 +1,8 @@
 package ru.mknet.stickers.dao;
 
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.mknet.stickers.service.SecretsService;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -9,18 +10,20 @@ import java.util.HashMap;
 @Component
 public class SQLConnector {
 
+    private Connection connection;
+    private Statement statement;
 
-    private  Connection connection;
-    private  Statement statement;
-
-    private final String DB_JDBC = SecretsService.getProperty("DB_BILLING");
-    private final String USER = SecretsService.getProperty("DB_USER");
-    private final String VALUE = SecretsService.getProperty("DB_PASS");
+    @Value("${DB_BILLING}")
+    private String DB_BILLING;
+    @Value("${DB_USER}")
+    private String DB_USER;
+    @Value("${DB_PASS}")
+    private String DB_PASS;
 
     public void connect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.connection = DriverManager.getConnection(DB_JDBC, USER, VALUE);
+            this.connection = DriverManager.getConnection(DB_BILLING, DB_USER, DB_PASS);
             this.statement = connection.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
@@ -35,11 +38,11 @@ public class SQLConnector {
         }
     }
 
-    public HashMap<String,String> getLoginAndPassByContract(String contract) {
+    public HashMap<String, String> getLoginAndPassByContract(String contract) {
 
         connect();
 
-        HashMap<String,String> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
 
         String query = "SELECT a.login_alias AS login, l.pswd AS password FROM `user_login_1` l " +
                 "INNER JOIN `user_alias_1` a ON a.login_id = l.id " +

@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  stickers:
+    build:
+      context: .
+    container_name: stickers
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - DB_BILLING=
+      - DB_USER=
+      - DB_PASS=
